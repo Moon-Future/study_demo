@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>简易版 MVVM</title>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" v-model="" />
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      {{ message }}
+    </div>
+
+    <script src="./Compile.js"></script>
+    <script src="./MVVM.js"></script>
+    <script>
+      let vm = new MVVM({
+        el: '#app',
+        data: {
+          message: 'Hello MVVM',
+        },
+      })
+    </script>
+  </body>
+</html>
