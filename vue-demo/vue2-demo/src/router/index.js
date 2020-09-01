@@ -23,6 +23,11 @@ const routes = [
     name: 'crossDomain',
     component: () => import(/* webpackChunkName: "crossDmian" */ '../views/CrossDomain.vue'),
   },
+  {
+    path: '/component',
+    name: 'Component',
+    component: () => import(/* webpackChunkName: "crossDmian" */ '../views/Component.vue'),
+  },
 ]
 
 const router = new VueRouter({
