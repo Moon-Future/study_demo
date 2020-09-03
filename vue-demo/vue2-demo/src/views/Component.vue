@@ -11,6 +11,7 @@
       <button @click="b += 1">+</button>
       <button @click="b -= 1">-</button>
     </div>
+    {{ sum }}
     <button @click="getSum">computed 缓存</button>
   </div>
 </template>
