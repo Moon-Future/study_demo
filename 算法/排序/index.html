@@ -1,0 +1,76 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .wrap {
+        height: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+      }
+      .box {
+        width: 50px;
+        margin-right: 20px;
+        background: #8be5f5;
+        display: flex;
+        flex-flow: column;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      .box-compare {
+        background: green;
+      }
+      .box-finished {
+        background: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap" id="wrap"></div>
+
+    <script>
+      const HEIGHT = document.body.clientHeight * 0.8
+      document.getElementById('wrap').style.height = HEIGHT
+      let compareIndex = [1, 2],
+        finishedIndex = []
+      function render(arr) {
+        let wrap = document.getElementById('wrap')
+        let fragment = document.createDocumentFragment('div')
+        let max = Math.max(...arr)
+        let rate = Math.floor(HEIGHT / max)
+        for (let i = 0, len = arr.length; i < len; i++) {
+          let box = document.createElement('div')
+          box.className = 'box'
+          box.id = `box-${i}`
+          box.textContent = arr[i]
+          box.style.height = (arr[i] / HEIGHT) * rate * 100 + '%'
+          if (compareIndex.includes(i)) {
+            box.className = 'box box-compare'
+          } else if (finishedIndex.includes(i)) {
+            box.className = 'box box-finished'
+          }
+          fragment.appendChild(box)
+        }
+        wrap.appendChild(fragment)
+      }
+
+      function bubbleSort(arr) {
+        for (let i = 0, len = arr.length; i < len; i++) {
+          for (let j = 0; j < len - 1 - i; j++) {
+            compareIndex = [j, j + 1]
+            if (arr[j] > arr[j + 1]) {
+              ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+            }
+          }
+        }
+        return arr
+      }
+
+      let arr = [2, 55, 13, 5, 8, 21, 18, 51]
+      console.log(bubbleSort(arr))
+      render(arr)
+    </script>
+  </body>
+</html>
