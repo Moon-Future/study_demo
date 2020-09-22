@@ -1,0 +1,190 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .wrap {
+        height: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+      }
+      .box {
+        width: 50px;
+        height: 100px;
+        margin-right: 20px;
+        background: #8be5f5;
+        display: flex;
+        flex-flow: column;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+      }
+      .box-compare {
+        background: #28df99;
+      }
+      .box-finished {
+        background: #ffc93c;
+      }
+      .box-move-left {
+        animation: move-left 200ms linear forwards;
+      }
+      .box-move-right {
+        animation: move-right 200ms linear forwards;
+      }
+      @keyframes move-left {
+        0% {
+          left: 0;
+        }
+        100% {
+          left: -70px;
+        }
+      }
+      @keyframes move-right {
+        0% {
+          left: 0;
+        }
+        100% {
+          left: 70px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button id="start">开始</button>
+    <div class="wrap" id="wrap"></div>
+
+    <script>
+      const HEIGHT = document.body.clientHeight * 0.3
+      document.getElementById('wrap').style.height = HEIGHT
+      let compareIndex = []
+      let finishedIndex = []
+
+      document.getElementById('start').onclick = function (ele) {
+        bubbleSort(arr)
+      }
+
+      function hasClass(el, className) {
+        let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
+        return reg.test(el.className)
+      }
+
+      function addClass(el, classNames) {
+        let newClass = el.className.split(' ')
+        classNames.split(' ').forEach((className) => {
+          if (!hasClass(el, className)) {
+            newClass.push(className)
+          }
+        })
+        el.className = newClass.join(' ')
+      }
+
+      function removeClass(el, classNames) {
+        let newClass = el.className.split(' ')
+        classNames.split(' ').forEach((className) => {
+          if (hasClass(el, className)) {
+            newClass = newClass.filter((ele) => {
+              return ele !== className
+            })
+          }
+        })
+        el.className = newClass.join(' ')
+      }
+
+      function render(arr) {
+        let wrap = document.getElementById('wrap')
+        let fragment = document.createDocumentFragment('div')
+        let max = Math.max(...arr)
+        let rate = Math.floor(HEIGHT / max)
+        for (let i = 0, len = arr.length; i < len; i++) {
+          let box = document.createElement('div')
+          box.className = 'box'
+          box.id = `box-${i}`
+          box.textContent = arr[i]
+          box.style.height = (arr[i] / HEIGHT) * rate * 100 + '%'
+          fragment.appendChild(box)
+        }
+        wrap.appendChild(fragment)
+      }
+
+      function delay(time) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve()
+          }, time)
+        })
+      }
+
+      async function moveFn(arr) {
+        return new Promise(async (resolve) => {
+          await delay(300)
+          let boxLeft = document.getElementById(`box-${compareIndex[0]}`)
+          let boxRight = document.getElementById(`box-${compareIndex[1]}`)
+          addClass(boxLeft, 'box-move-right')
+          addClass(boxRight, 'box-move-left')
+          setTimeout(() => {
+            removeClass(boxLeft, 'box-move-right')
+            removeClass(boxRight, 'box-move-left')
+            let max = Math.max(...arr)
+            let rate = Math.floor(HEIGHT / max)
+            boxLeft.textContent = arr[compareIndex[0]]
+            boxLeft.style.height = (arr[compareIndex[0]] / HEIGHT) * rate * 100 + '%'
+            boxRight.textContent = arr[compareIndex[1]]
+            boxRight.style.height = (arr[compareIndex[1]] / HEIGHT) * rate * 100 + '%'
+            resolve()
+          }, 200)
+        })
+      }
+
+      async function compare(arr, move) {
+        return new Promise(async (resolve) => {
+          for (let i = 0, len = arr.length; i < len; i++) {
+            let box = document.getElementById(`box-${i}`)
+            box.className = 'box'
+            if (compareIndex.includes(i)) {
+              addClass(box, 'box-compare')
+            } else if (finishedIndex.includes(i)) {
+              addClass(box, 'box-finished')
+            }
+          }
+          if (move) {
+            // 移动动画
+            await moveFn(arr)
+          }
+          setTimeout(() => {
+            resolve()
+          }, 500)
+        })
+      }
+
+      async function bubbleSort(arr) {
+        let move = false
+        for (let i = 0, len = arr.length; i < len; i++) {
+          let flag = false
+          for (let j = 0; j < len - 1 - i; j++) {
+            move = false
+            if (arr[j] > arr[j + 1]) {
+              flag = true
+              move = true
+              ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+            }
+            if (j === len - 2 - i) {
+              finishedIndex.push(j + 1)
+            }
+            compareIndex = [j, j + 1]
+            await compare(arr, move)
+          }
+          if (!flag) break
+        }
+        compareIndex = []
+        finishedIndex = []
+        await compare(arr, false)
+        return arr
+      }
+
+      let arr = [8, 9, 1, 7, 2, 3, 5, 4, 6]
+      render(arr)
+    </script>
+  </body>
+</html>
