@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 // 1. 多个文件打包到一起，实现多个文件打包
 module.exports = {
   // 写成数组的方式就可以打出多入口文件，不过这里打包后的文件都合成了一个
-  entry: ['.src/index.js', './src/login.js'],
+  entry: ['.src/pageA.js', './src/pageB.js'],
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, 'dist'),
@@ -16,8 +16,8 @@ module.exports = {
 // 2. 真正实现多入口和多出口需要写成对象的方式
 module.exports = {
   entry: {
-    index: './src/index.js',
-    login: './src/login.js',
+    index: './src/pageA.js',
+    login: './src/pageB.js',
   },
   output: {
     // [name] 可以将出口文件与入口文件一一对应

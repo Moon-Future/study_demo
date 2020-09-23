@@ -2,10 +2,11 @@ const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = {
-  mode: 'development',
+  // mode: 'development',
   //  可选，如果打包路径不是 dist 可在此修改
   devServer: {
     contentBase: './dist',
@@ -110,4 +111,13 @@ module.exports = {
     // 热更新，热更新不是刷新
     new webpack.HotModuleReplacementPlugin(),
   ],
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          mangle: true,
+        },
+      }),
+    ],
+  },
 }
