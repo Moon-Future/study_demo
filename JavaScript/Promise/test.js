@@ -1,27 +1,19 @@
 const Promise = require('./Promise.js')
 
-// console.log(111)
-// const p = new Promise((resolve, reject) => {
-//   console.log(222)
-//   resolve('haha')
-// })
-
-// p.then(res => {
-//   console.log('xxx', res)
-// })
-
-// p.then(res => {
-//   console.log('yyy', res)
-// })
-// console.log(333, p)
-
-new Promise((resolve, reject) => {
-  resolve(new Promise((resolve1, reject1) => {
-    resolve1(666)
-  }))
-}).then(res => {
-  console.log('success', res)
-}, err => {
-  console.log('fail', err)
+console.log('start')
+let p = new Promise((resolve, reject) => {
+  console.log('promise1')
+  resolve(2)
 })
+
+p.then(res => {
+  console.log('dddd1', res)
+  return 3
+}).then(res => {
+  console.log('dddd2', res)
+})
+
+console.log('end', p)
+
+
 
