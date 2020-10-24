@@ -6,7 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = {
-  // mode: 'development',
+  mode: 'development',
   //  可选，如果打包路径不是 dist 可在此修改
   devServer: {
     contentBase: './dist',
