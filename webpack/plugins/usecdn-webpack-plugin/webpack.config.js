@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const Usecdn = require('./plugins/usecdn')
 
 module.exports = {
@@ -14,22 +15,30 @@ module.exports = {
     vue: 'Vue'
   },
   module: {
-    rules: []
+    rules: [
+      {
+        test: /\.css$/,
+        use: [{ loader: MiniCssExtractPlugin.loader }, 'css-loader']
+      }
+    ]
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      cdn: {
-        js: [
-          'https://cdn.bootcdn.net/ajax/libs/jquery/1.10.0/jquery.js',
-          'https://cdn.bootcdn.net/ajax/libs/vue/0.10.0/vue.js'
-        ],
-        css: [
-          'https://cdn.bootcdn.net/ajax/libs/animate.css/2.0/animate.css'
-        ]
-      }
+      // cdn: {
+      //   js: [
+      //     'https://cdn.bootcdn.net/ajax/libs/jquery/1.10.0/jquery.js',
+      //     'https://cdn.bootcdn.net/ajax/libs/vue/0.10.0/vue.js'
+      //   ],
+      //   css: [
+      //     'https://cdn.bootcdn.net/ajax/libs/animate.css/2.0/animate.css'
+      //   ]
+      // }
     }),
-    new Usecdn()
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    })
+    // new Usecdn()
   ]
 }

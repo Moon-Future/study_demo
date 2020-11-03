@@ -1,4 +1,3 @@
-import Vue from 'vue'
+import './index.css'
 
 const a = '6'
-console.log(a, Vue)
